@@ -23,7 +23,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
-                    cd app
+                    cd app/JAVA-Login-App
                     mvn validate
                     mvn clean
                     mvn validate
