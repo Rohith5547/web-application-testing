@@ -9,11 +9,6 @@ pipeline {
             }
         }
 
-        stage('Validate Nginx Config') {
-            steps {
-                sh 'sudo /usr/sbin/nginx -t -c $WORKSPACE/nginx/web-tier.conf'
-            }
-        }
 
         stage('Deploy Config') {
             steps {
@@ -21,6 +16,12 @@ pipeline {
                     sudo cp $WORKSPACE/nginx/web-tier.conf /etc/nginx/sites-available/web-tier
                     sudo ln -sf /etc/nginx/sites-available/web-tier /etc/nginx/sites-enabled/web-tier
                 '''
+            }
+        }
+
+        stage('Validate Nginx Config') {
+            steps {
+                sh 'sudo /usr/sbin/nginx -t'
             }
         }
 
