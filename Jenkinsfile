@@ -11,7 +11,7 @@ pipeline {
 
         stage('Validate Nginx Config') {
             steps {
-                sh 'sudo nginx -t -c $WORKSPACE/nginx/web-tier.conf'
+                sh 'sudo /usr/sbin/nginx -t -c $WORKSPACE/nginx/web-tier.conf'
             }
         }
 
@@ -26,7 +26,7 @@ pipeline {
 
         stage('Reload Nginx') {
             steps {
-                sh 'sudo systemctl reload nginx'
+                sh 'sudo /usr/sbin/systemctl reload nginx'
             }
         }
     }
