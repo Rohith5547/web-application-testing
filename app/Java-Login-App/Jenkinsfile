@@ -27,7 +27,7 @@ pipeline {
                     mvn validate
                     mvn clean
                     mvn validate
-                    // mvn clean package
+                    
                 '''
             }
         }
