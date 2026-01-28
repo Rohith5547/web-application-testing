@@ -1,0 +1,102 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk 'JDK_17'
+        maven 'maven3'
+    }
+
+    environment {
+        APP_NAME     = "webapp"
+        TOMCAT_HOME  = "/opt/tomcat"
+        WAR_FILE     = "target/${APP_NAME}.war"
+    }
+
+    stages {
+
+        stage('Change Detection') {
+            steps {
+                echo "✅ App tier changes detected"
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh '''
+                    cd app
+                    mvn validate
+                    mvn clean
+                    mvn validate
+                    // mvn clean package
+                '''
+            }
+        }
+
+        // stage('Unit Tests') {
+        //     steps {
+        //         sh '''
+        //             cd app
+        //             mvn test
+        //         '''
+        //     }
+        // }
+
+        // stage('Dependency Vulnerability Scan') {
+        //     steps {
+        //         sh '''
+        //             cd app
+        //             mvn org.owasp:dependency-check-maven:check
+        //         '''
+        //     }
+        // }
+
+        // stage('Package WAR') {
+        //     steps {
+        //         sh '''
+        //             cd app
+        //             mvn package -DskipTests
+        //             ls -lh target/*.war
+        //         '''
+        //     }
+        // }
+
+        // stage('Deploy to Tomcat') {
+        //     when {
+        //         changeset "app/**"
+        //     }
+        //     steps {
+        //         sh '''
+        //             sudo rm -rf $TOMCAT_HOME/webapps/$APP_NAME
+        //             sudo rm -f  $TOMCAT_HOME/webapps/$APP_NAME.war
+
+        //             sudo cp app/$WAR_FILE $TOMCAT_HOME/webapps/
+
+        //             sudo $TOMCAT_HOME/bin/shutdown.sh || true
+        //             sleep 5
+        //             sudo $TOMCAT_HOME/bin/startup.sh
+        //         '''
+        //     }
+        // }
+
+        // stage('Health Check') {
+        //     when {
+        //         changeset "app/**"
+        //     }
+        //     steps {
+        //         sh '''
+        //             sleep 15
+        //             curl -f http://localhost:8080/$APP_NAME || exit 1
+        //         '''
+        //     }
+        // }
+    }
+
+    // post {
+    //     success {
+    //         echo "✅ App tier deployment successful"
+    //     }
+    //     failure {
+    //         echo "❌ App tier deployment failed"
+    //     }
+    // }
+}
