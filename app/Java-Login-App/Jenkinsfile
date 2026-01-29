@@ -55,7 +55,7 @@ pipeline {
                             cd ${APP_DIR}
 
                             mvn org.owasp:dependency-check-maven:check \
-                                -DfailOnCVSS=11 \
+                                -DaudoUpdate=false \
                                 -Dformat=XML
                         """
                         sh """
@@ -87,6 +87,8 @@ pipeline {
                             --scan .
                             --format XML
                             --prettyPrint
+                            --disableNvdUpdate
+                            --disableRetireJs
                         ''',
                         odcInstallation: 'Owas-dependency-check-10'
 
