@@ -50,6 +50,7 @@ pipeline {
                 /* =========================================
                  * 1. CLI OWASP Dependency-Check + Manual Gate
                  * ========================================= */
+                 
                  stage('CLI Dependency Audit') {
                     steps {
                         sh """
@@ -78,6 +79,24 @@ pipeline {
                               echo "✅ Vulnerability threshold acceptable"
                             fi
                         """
+                    }
+                 }
+                 
+                 stage('Jenkins OWASP Plugin Scan') {
+                    steps {
+                        dependencyCheck additionalArguments: '''
+                            -n
+                            --scan ${APP_DIR}
+                            --out ${APP_DIR}/target/odc-jenkins
+                            --format XML
+                            --prettyPrint
+                        ''',
+                        odcInstallation: 'Owas-dependency-check-10'
+                        dependencyCheckPublisher(
+                            pattern: '${APP_DIR}/target/odc-jenkins/dependency-check-report.xml',
+                            failedTotalCritical: 1,
+                            stopBuild: true
+                        )
                     }
                  }
             }
