@@ -4,7 +4,7 @@ pipeline {
     tools {
         jdk 'JDK_17'
         maven 'MAVEN3.8.7'
-        owasp "Owas-dependency-check-10"
+        dependencyCheck "Owas-dependency-check-10"
     }
 
     environment {
