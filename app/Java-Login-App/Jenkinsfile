@@ -58,7 +58,7 @@ pipeline {
 
                             mvn org.owasp:dependency-check-maven:check \
                                 -DautoUpdate=false \
-                                -Dformat=XML
+                                -Dformat=XML, HTML
                         """
                         
                         sh """
@@ -97,6 +97,7 @@ pipeline {
                             failedTotalCritical: 1,
                             stopBuild: true
                         )
+                        
                     }
                  }
             }
