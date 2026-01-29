@@ -4,6 +4,7 @@ pipeline {
     tools {
         jdk 'JDK_17'
         maven 'MAVEN3.8.7'
+        owasp "Owas-dependency-check-10"
     }
 
     environment {
@@ -87,7 +88,7 @@ pipeline {
                             --format XML
                             --prettyPrint
                         ''',
-                        odcInstallation: 'OWASP-DepCheck-10'
+                        odcInstallation: 'Owas-dependency-check-10'
 
                         dependencyCheckPublisher(
                             pattern: '**/dependency-check-report.xml',
