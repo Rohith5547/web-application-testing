@@ -86,7 +86,7 @@ pipeline {
                     steps {
                         dependencyCheck additionalArguments: '''
                             -n
-                            --scan .
+                            --scan app/Java-Login-App
                             --format XML
                             --prettyPrint
                     
