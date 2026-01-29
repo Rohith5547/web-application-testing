@@ -93,7 +93,7 @@ pipeline {
                         ''',
                         odcInstallation: 'Owas-dependency-check-10'
                         dependencyCheckPublisher(
-                            pattern: '${APP_DIR}/target/odc-jenkins/dependency-check-report.xml',
+                            pattern: 'app/Java-Login-App/target/odc-jenkins/dependency-check-report.xml',
                             failedTotalCritical: 1,
                             stopBuild: true
                         )
