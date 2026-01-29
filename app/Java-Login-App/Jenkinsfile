@@ -107,6 +107,17 @@ pipeline {
                             grep -o "<severity>High</severity>" dependency-check-report.xml | wc -l
                         '''
 
+                        publishHTML([
+                            allowMissing: true,
+                            alwaysLinkToLastBuild: true,
+                            keepAll: true,
+                            reportDir: './',
+                            reportFiles: 'dependency-check-report.xml',
+                            reportName: 'Dependency Check HTML Report',
+                            reportTitles: '',
+                            useWrapperFileDirectly: true
+                        ])
+
                     }
                 }
             }
