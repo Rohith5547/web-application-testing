@@ -86,8 +86,8 @@ pipeline {
                     steps {
                         dependencyCheck additionalArguments: '''
                             -n
-                            --scan ${APP_DIR}
-                            --out ${APP_DIR}/target/odc-jenkins
+                            --scan app/Java-Login-App
+                            --out app/Java-Login-App/target/odc-jenkins
                             --format XML
                             --prettyPrint
                         ''',
