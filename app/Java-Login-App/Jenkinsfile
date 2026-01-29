@@ -4,7 +4,7 @@ pipeline {
     tools {
         jdk 'JDK_17'
         maven 'MAVEN3.8.7'
-        dependency-check "Owas-dependency-check-10"
+        'dependency-check' 'Owas-dependency-check-10'
     }
 
     environment {
