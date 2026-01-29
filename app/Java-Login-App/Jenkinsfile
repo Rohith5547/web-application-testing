@@ -27,6 +27,7 @@ pipeline {
             steps {
                 sh '''
                     cd ${APP_DIR}
+                    mvn clean
                     mvn validate
                     
                 '''
