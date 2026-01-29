@@ -97,6 +97,18 @@ pipeline {
                             failedTotalCritical: 1,
                             stopBuild: true
                         )
+
+                        publishHTML([
+                            allowMissing: true,
+                            alwaysLinkToLastBuild: true,
+                            keepAll: true,
+                            reportDir: 'app/Java-Login-App/target',
+                            reportFiles: 'dependency-check-report.html',
+                            reportName: 'OWASP Dependency-Check (Maven CLI)',
+                            reportTitles: 'Dependency-Check Report',
+                            useWrapperFileDirectly: true
+                        ])
+
                         
                     }
                  }
