@@ -99,6 +99,14 @@ pipeline {
                             failedTotalCritical: 1,
                             stopBuild: true
                         )
+                        sh '''
+                            echo "Critical count:"
+                            grep -o "<severity>Critical</severity>" dependency-check-report.xml | wc -l
+
+                            echo "High count:"
+                            grep -o "<severity>High</severity>" dependency-check-report.xml | wc -l
+                        '''
+
                     }
                 }
             }
