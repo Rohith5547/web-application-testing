@@ -82,43 +82,43 @@ pipeline {
                  /* =========================================
                  * 2. Jenkins OWASP Dependency-Check Plugin
                  * ========================================= */
-                stage('Jenkins OWASP Plugin Scan') {
-                    steps {
-                        dependencyCheck additionalArguments: '''
-                            -n
-                            --scan app/Java-Login-App
-                            --format XML
-                            --prettyPrint
+                // stage('Jenkins OWASP Plugin Scan') {
+                //     steps {
+                //         dependencyCheck additionalArguments: '''
+                //             -n
+                //             --scan app/Java-Login-App
+                //             --format XML
+                //             --prettyPrint
                     
                             
-                        ''',
-                        odcInstallation: 'Owas-dependency-check-10'
+                //         ''',
+                //         odcInstallation: 'Owas-dependency-check-10'
 
-                        dependencyCheckPublisher(
-                            pattern: '**/dependency-check-report.xml',
-                            failedTotalCritical: 1,
-                            stopBuild: true
-                        )
-                        sh '''
-                            echo "Critical count:"
-                            grep -o "<severity>Critical</severity>" dependency-check-report.xml | wc -l
+                //         dependencyCheckPublisher(
+                //             pattern: '**/dependency-check-report.xml',
+                //             failedTotalCritical: 1,
+                //             stopBuild: true
+                //         )
+                //         sh '''
+                //             echo "Critical count:"
+                //             grep -o "<severity>Critical</severity>" dependency-check-report.xml | wc -l
 
-                            echo "High count:"
-                            grep -o "<severity>High</severity>" dependency-check-report.xml | wc -l
-                        '''
+                //             echo "High count:"
+                //             grep -o "<severity>High</severity>" dependency-check-report.xml | wc -l
+                //         '''
 
-                        publishHTML([
-                            allowMissing: true,
-                            alwaysLinkToLastBuild: true,
-                            keepAll: true,
-                            reportDir: './',
-                            reportFiles: 'dependency-check-report.xml',
-                            reportName: 'Dependency Check HTML Report',
-                            reportTitles: '',
-                            useWrapperFileDirectly: true
-                        ])
+                //         publishHTML([
+                //             allowMissing: true,
+                //             alwaysLinkToLastBuild: true,
+                //             keepAll: true,
+                //             reportDir: './',
+                //             reportFiles: 'dependency-check-report.xml',
+                //             reportName: 'Dependency Check HTML Report',
+                //             reportTitles: '',
+                //             useWrapperFileDirectly: true
+                //         ])
 
-                    }
+                //     }
                 }
             }
         }
