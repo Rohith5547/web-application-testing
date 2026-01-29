@@ -85,11 +85,12 @@ pipeline {
                 stage('Jenkins OWASP Plugin Scan') {
                     steps {
                         dependencyCheck additionalArguments: '''
+                            -n
                             --scan .
                             --format XML
                             --prettyPrint
-                            --disableNvdUpdate
-                            --disableRetireJs
+                    
+                            
                         ''',
                         odcInstallation: 'Owas-dependency-check-10'
 
