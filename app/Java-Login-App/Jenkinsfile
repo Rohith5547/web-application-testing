@@ -7,48 +7,97 @@ pipeline {
     }
 
     environment {
-        APP_NAME     = "webapp"
-        TOMCAT_HOME  = "/opt/tomcat"
-        WAR_FILE     = "target/${APP_NAME}.war"
+        APP_NAME    = "dptweb"
+        APP_VERSION = "1.0"
+        TOMCAT_HOME = "/opt/tomcat"
+        WAR_NAME    = "${APP_NAME}-${APP_VERSION}.war"
+        APP_DIR     = "app/Java-Login-App"
     }
 
     stages {
 
         stage('Change Detection') {
             steps {
-                echo "✅ App tier changes detected"
+                echo "✅ Source code detected, starting pipeline"
             }
         }
 
-        stage('Build') {
+        stage('Validate') {
             steps {
                 sh '''
-                    cd app/Java-Login-App
-                    mvn validate
-                    mvn clean
+                    cd ${APP_DIR}
                     mvn validate
                     
                 '''
             }
         }
 
-        // stage('Unit Tests') {
-        //     steps {
-        //         sh '''
-        //             cd app
-        //             mvn test
-        //         '''
-        //     }
-        // }
+        stage('Comlile') {
+            steps {
+                sh '''
+                    cd ${APP_DIR}
+                    mvn clean compile -DskipTests
+                    
+                '''
+            }
+        }
 
-        // stage('Dependency Vulnerability Scan') {
-        //     steps {
-        //         sh '''
-        //             cd app
-        //             mvn org.owasp:dependency-check-maven:check
-        //         '''
-        //     }
-        // }
+
+        stage('Dependency scanning') {
+            parallel {
+                /* =========================================
+                 * 1. CLI OWASP Dependency-Check + Manual Gate
+                 * ========================================= */
+                 stage('CLI Dependency Audit') {
+                    steps {
+                        sh """
+                            cd ${APP_DIR}
+
+                            mvn org.owasp:dependency-check-maven:check \
+                                -DfailOnCVSS=11 \
+                                -Dformat=XML
+                        """
+                        sh """
+                            cd ${APP_DIR}
+
+                            CRITICAL=\$(grep -o '<severity>Critical</severity>' target/dependency-check-report.xml | wc -l)
+                            HIGH=\$(grep -o '<severity>High</severity>' target/dependency-check-report.xml | wc -l)
+
+                            echo "Critical vulnerabilities: \$CRITICAL"
+                            echo "High vulnerabilities: \$HIGH"
+
+                            TOTAL=\$((CRITICAL + HIGH))
+
+                            if [ "\$TOTAL" -gt 1 ]; then
+                              echo "❌ More than 1 High/Critical vulnerability found"
+                              exit 1
+                            else
+                              echo "✅ Vulnerability threshold acceptable"
+                            fi
+                        """
+                    }
+                 }
+                 /* =========================================
+                 * 2. Jenkins OWASP Dependency-Check Plugin
+                 * ========================================= */
+                stage('Jenkins OWASP Plugin Scan') {
+                    steps {
+                        dependencyCheck additionalArguments: '''
+                            --scan .
+                            --format XML
+                            --prettyPrint
+                        ''',
+                        odcInstallation: 'OWASP-DepCheck-10'
+
+                        dependencyCheckPublisher(
+                            pattern: '**/dependency-check-report.xml',
+                            failedTotalCritical: 1,
+                            stopBuild: true
+                        )
+                    }
+                }
+            }
+        }
 
         // stage('Package WAR') {
         //     steps {
@@ -89,6 +138,7 @@ pipeline {
         //         '''
         //     }
         // }
+
     }
 
     // post {
