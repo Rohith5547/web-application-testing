@@ -82,24 +82,24 @@ pipeline {
                  /* =========================================
                  * 2. Jenkins OWASP Dependency-Check Plugin
                  * ========================================= */
-                // stage('Jenkins OWASP Plugin Scan') {
-                //     steps {
-                //         dependencyCheck additionalArguments: '''
-                //             --scan .
-                //             --format XML
-                //             --prettyPrint
-                //             --disableNvdUpdate
-                //             --disableRetireJs
-                //         ''',
-                //         odcInstallation: 'Owas-dependency-check-10'
+                stage('Jenkins OWASP Plugin Scan') {
+                    steps {
+                        dependencyCheck additionalArguments: '''
+                            --scan .
+                            --format XML
+                            --prettyPrint
+                            --disableNvdUpdate
+                            --disableRetireJs
+                        ''',
+                        odcInstallation: 'Owas-dependency-check-10'
 
-                //         dependencyCheckPublisher(
-                //             pattern: '**/dependency-check-report.xml',
-                //             failedTotalCritical: 1,
-                //             stopBuild: true
-                //         )
-                //     }
-                // }
+                        dependencyCheckPublisher(
+                            pattern: '**/dependency-check-report.xml',
+                            failedTotalCritical: 1,
+                            stopBuild: true
+                        )
+                    }
+                }
             }
         }
 
