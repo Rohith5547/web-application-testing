@@ -114,6 +114,14 @@ pipeline {
                  }
             }
         }
+        stage("Unit Testing") {
+            steps{
+                sh '''
+                    cd ${APP_DIR}
+                    mvn test
+                '''
+            } 
+        }
     }
 }
                  
