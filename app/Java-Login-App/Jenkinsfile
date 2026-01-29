@@ -58,7 +58,7 @@ pipeline {
 
                             mvn org.owasp:dependency-check-maven:check \
                                 -DautoUpdate=false \
-                                -Dformat=XML, HTML
+                                -Dformat=ALL
                         """
                         
                         sh """
