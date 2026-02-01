@@ -13,7 +13,7 @@ pipeline {
         TOMCAT_HOME = "/opt/tomcat"
         WAR_NAME    = "${APP_NAME}-${APP_VERSION}.war"
         APP_DIR     = "app/Java-Login-App"
-        SPRING_DATASOURCE_URL = jdbc:mysql://localhost:3306/dptweb
+        SPRING_DATASOURCE_URL = 'jdbc:mysql://localhost:3306/dptweb'
         SPRING_DATASOURCE_USERNAME = credentials('SPRING_DATASOURCE_USERNAME')
         SPRING_DATASOURCE_PASSWORD = credentials('SPRING_DATASOURCE_PASSWORD')
     }
@@ -37,7 +37,7 @@ pipeline {
             }
         }
 
-        stage('Comlile') {
+        stage('ComPile') {
             steps {
                 sh '''
                     cd ${APP_DIR}
@@ -119,10 +119,18 @@ pipeline {
         }
         stage("Unit Testing") {
             steps{
-                sh '''
-                    cd ${APP_DIR}
-                    mvn test
-                '''
+                script {
+                    withCredentials([
+                        string(credentialsId: 'database username', variable: 'SPRING_DATASOURCE_USERNAME'),
+                        // Bind 'my-password' secret text ID to an env variable named 'PASSWORD_VAR')
+                        string(credentialsId: 'databasePassword', variable: 'SPRING_DATASOURCE_PASSWORD')
+                    ]) {
+                        sh '''
+                            cd ${APP_DIR}
+                            mvn test
+                        '''
+                    }
+                }
             } 
         }
     }
