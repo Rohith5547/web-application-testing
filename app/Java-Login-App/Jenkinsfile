@@ -119,17 +119,14 @@ pipeline {
         }
         stage("Unit Testing") {
             steps{
-                script {
-                    withCredentials([
-                        string(credentialsId: 'database username', variable: 'SPRING_DATASOURCE_USERNAME'),
-                        // Bind 'my-password' secret text ID to an env variable named 'PASSWORD_VAR')
-                        string(credentialsId: 'databasePassword', variable: 'SPRING_DATASOURCE_PASSWORD')
-                    ]) {
-                        sh '''
-                            cd ${APP_DIR}
-                            mvn test
-                        '''
-                    }
+                withCredentials([
+                    string(credentialsId: 'SPRING_DATASOURCE_USERNAME', variable: 'SPRING_DATASOURCE_USERNAME'),
+                    string(credentialsId: 'SPRING_DATASOURCE_PASSWORD', variable: 'SPRING_DATASOURCE_PASSWORD')
+                ]) {
+                    sh '''
+                        cd ${APP_DIR}
+                        mvn clean test
+                    '''
                 }
             } 
         }
