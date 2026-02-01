@@ -19,8 +19,8 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
-                .loginPage("/login")              // GET handled by controller
-                .loginProcessingUrl("/login")     // POST handled by security
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/home", true)
                 .failureUrl("/login?error")
                 .and()
@@ -30,4 +30,4 @@ public class SecurityConfig {
         return http.build();
     }
 }
-    
+
