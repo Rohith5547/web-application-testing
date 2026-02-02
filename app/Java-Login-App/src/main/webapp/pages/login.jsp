@@ -21,12 +21,15 @@
                 <tbody>
                     <tr>
                         <td>Username</td>
-                        <td><input type="text" name="userName" value="" /></td>
+                        <td><input type="text" name="username" value="" /></td>
                     </tr>
                     <tr>
                         <td>Password</td>
                         <td><input type="password" name="password" value="" /></td>
                     </tr>
+                    <input  type="hidden"
+                            name="${_csrf.parameterName}"
+                            value="${_csrf.token}" />
                     <tr>
                         <td><input type="submit" value="Login" /></td>
                         <td><input type="reset" value="Reset" /></td>
