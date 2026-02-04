@@ -127,6 +127,16 @@ pipeline {
                         cd ${APP_DIR}
                         mvn clean test
                     '''
+                    publishHTML([
+                            allowMissing: true,
+                            alwaysLinkToLastBuild: true,
+                            keepAll: true,
+                            reportDir: 'app/Java-Login-App/target/site/jacoco/',
+                            reportFiles: 'index.html',
+                            reportName: 'Code coverage report',
+                            reportTitles: 'Code coverage Report',
+                            useWrapperFileDirectly: true
+                        ])
                 }
             } 
         }
