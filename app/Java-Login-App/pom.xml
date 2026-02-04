@@ -89,6 +89,12 @@
     			<groupId>org.jacoco</groupId>
    	 			<artifactId>jacoco-maven-plugin</artifactId>
     			<version>0.8.11</version>
+				<configuration>
+        			<excludes>
+            			<exclude>**/MyWebAppApplication.class</exclude>
+            			<exclude>**/ServletInitializer.class</exclude>
+        			</excludes>
+    			</configuration>
     			<executions>
 
         		<!-- Attach JaCoCo agent before tests -->
