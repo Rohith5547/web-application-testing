@@ -145,6 +145,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQube Analysis') {
                     sh '''
+                        cd ${APP_DIR}
                         mvn sonar:sonar \
                           -Dsonar.projectKey=webapplication \
                           -Dsonar.sources=src/main/java \
