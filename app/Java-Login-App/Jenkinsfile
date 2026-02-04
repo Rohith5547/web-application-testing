@@ -147,8 +147,11 @@ pipeline {
                     mvn clean verify sonar:sonar \
                         -Dsonar.projectKey=webapplication \
                         -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.sources=src/main/java \
+                        -Dsonar.tests=src/test/java \
+                        -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
                         -Dsonar.login=sqp_13eeb1c0427cdc3500576c23c033783be96db27b \
-                        -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+                        
                '''
             }
         }
