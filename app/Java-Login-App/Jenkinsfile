@@ -16,6 +16,7 @@ pipeline {
         SPRING_DATASOURCE_URL = 'jdbc:mysql://localhost:3306/dptweb'
         SPRING_DATASOURCE_USERNAME = credentials('SPRING_DATASOURCE_USERNAME')
         SPRING_DATASOURCE_PASSWORD = credentials('SPRING_DATASOURCE_PASSWORD')
+        SONAR_SCANNER_HOME = tool 'SonarQube SAST'
     }
 
     stages {
@@ -139,6 +140,26 @@ pipeline {
                         ])
                 }
             } 
+        }
+        stage('SonarQube analysis') {
+            steps {
+                sh '''
+                    mvn clean verify sonar:sonar \
+                        -Dsonar.projectKey=webapplication \
+                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.login=sqp_13eeb1c0427cdc3500576c23c033783be96db27b \
+                        -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+               '''
+            }
+        }
+        
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
         }
     }
 }
