@@ -144,6 +144,7 @@ pipeline {
         stage('SonarQube analysis') {
             steps {
                 sh '''
+                    cd ${APP_DIR}
                     mvn clean verify sonar:sonar \
                         -Dsonar.projectKey=webapplication \
                         -Dsonar.host.url=http://localhost:9000 \
